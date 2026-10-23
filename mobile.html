@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Surprise pour Jessica... ♡</title>
+<style>
+:root {
+  --black: #0b0a08;
+  --gold: #d8b16c;
+  --light-gold: #f6dfac;
+  --cream: #f8efe0;
+  --dark-red: #5c1a1a;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--black);
+  color: var(--cream);
+  font-family: 'Georgia', serif;
+  overflow: hidden; 
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.quiz-container {
+  width: 90%;
+  max-width: 500px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: var(--cream);
+  color: #38291a;
+  padding: 30px 20px;
+  box-shadow: 0 0 100px rgba(216, 177, 108, 0.3);
+  border-radius: 15px;
+  text-align: center;
+  z-index: 100;
+  animation: slideUp 1s ease-out;
+}
+
+.quiz-question {
+  font-size: clamp(18px, 5vw, 22px);
+  margin-bottom: 30px;
+  font-weight: normal;
+  font-style: italic;
+  line-height: 1.4;
+}
+
+.lock-btn {
+  display: inline-block;
+  padding: 15px 30px;
+  background: var(--dark-red);
+  color: white;
+  border: none;
+  border-radius: 50px;
+  font-family: inherit;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+  text-decoration: none;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.letter-text {
+  font-size: clamp(16px, 4vw, 18px);
+  line-height: 1.6;
+  margin-bottom: 20px;
+  font-style: italic;
+}
+
+.shake-container {
+  position: relative;
+  width: 100px;
+  height: 150px;
+  margin: 20px auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.shake-icon {
+  font-size: 60px;
+  display: block;
+  animation: shakePhone 2s ease-in-out infinite;
+  z-index: 2;
+}
+.shake-arrow {
+  position: absolute;
+  font-size: 30px;
+  color: var(--gold);
+  animation: arrowFade 2s ease-in-out infinite;
+}
+.arrow-up { top: 0; transform: rotate(0deg); }
+.arrow-down { bottom: 0; transform: rotate(180deg); }
+
+@keyframes shakePhone {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-25px) rotate(5deg); }
+  50% { transform: translateY(25px) rotate(-5deg); }
+  75% { transform: translateY(-25px) rotate(5deg); }
+}
+@keyframes arrowFade {
+  0%, 100% { opacity: 0.3; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+.all-included-box {
+  margin: 20px 0;
+  min-height: 100px;
+  border: 1px dashed var(--gold);
+  padding: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+.added-option {
+  display: inline-block;
+  margin: 5px;
+  padding: 5px 10px;
+  background: var(--gold);
+  color: var(--black);
+  border-radius: 5px;
+  font-size: 14px;
+  animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+@keyframes popIn { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+.timer-text {
+  margin-top: 15px;
+  font-size: 12px;
+  color: #777;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.code-display {
+  font-size: 32px;
+  font-weight: bold;
+  color: var(--dark-red);
+  margin: 20px 0;
+  letter-spacing: 5px;
+  border: 2px dashed var(--gold);
+  display: inline-block;
+  padding: 10px 20px;
+  background: white;
+}
+</style>
+</head>
+<body>
+
+<div class="quiz-container">
+  <!-- Étape 1 : Intro au secouage -->
+  <div id="shakeIntroStep">
+    <div class="quiz-question">Merci pour tes choix !! <br><br> et maintenant il va falloir mélanger tout ça... <br><br> tu es prête ?</div>
+    <button class="lock-btn" id="startShakeBtn">Oui, je suis prête ! ♡</button>
+  </div>
+
+  <!-- Étape 2 : Secouage -->
+  <div id="shakeStep" style="display:none;" class="shake-text-container">
+    <div class="shake-container">
+      <div class="shake-arrow arrow-up">↑</div>
+      <div class="shake-icon">📱</div>
+      <div class="shake-arrow arrow-down">↓</div>
+    </div>
+    <div class="quiz-question" id="shakeText">secoue ton téléphone de haut en bas énergiquement ! 📱</div>
+    <div class="timer-text" id="shakeHint" style="display:none; margin-top:20px; font-weight:bold; color: #8a6d3b;">Ne t'arrête pas, continue encore un peu...</div>
+  </div>
+
+  <!-- Étape 3 : Pardon -->
+  <div id="pardonStep" style="display:none;">
+    <div class="letter-text">"JE RIGOLE ! C'était une blague juste pour te taquiner ;)<br><br>
+    Désolé si tu t'es payé l'air con haha"</div>
+    <div class="letter-text" style="margin-top:20px;">"Mais pour me faire pardonner... j'ai pris la liberté d'améliorer un peu tes choix précédents."</div>
+    <button class="lock-btn" id="revealModsBtn">Révéler les modifications ♡</button>
+  </div>
+
+  <!-- Étape 4 : Tout inclus -->
+  <div id="finalSelection" style="display:none;">
+    <div class="letter-text">"En fait, j'ai décidé que tu méritais TOUT."</div>
+    <div class="all-included-box" id="allIncludedBox"></div>
+    <button class="lock-btn" id="revealCodeBtn" style="margin-top:20px;">Voir le code secret ♡</button>
+  </div>
+
+  <!-- Étape 5 : Le Code Final -->
+  <div id="codeStep" style="display:none;">
+    <div class="quiz-question">C'est validé ! ❤️</div>
+    <div class="letter-text">Recopie ce code sur ton ordinateur pour découvrir ta surprise finale :</div>
+    <div class="code-display">241026</div>
+    <div class="timer-text" style="margin-top:20px;">Rends-toi vite sur l'écran de l'ordi !</div>
+  </div>
+</div>
+
+<script>
+const options = ["Tout", "Le meilleur", "Le luxe", "L'amour"]; // On peut adapter selon les choix originaux
+
+document.getElementById("startShakeBtn").onclick = () => {
+  document.getElementById("shakeIntroStep").style.display = "none";
+  document.getElementById("shakeStep").style.display = "block";
+};
+
+let shakeCount = 0;
+const shakeThreshold = 20; 
+
+window.addEventListener('devicemotion', (event) => {
+  const acc = event.accelerationIncludingGravity;
+  if (Math.abs(acc.z) > 12) {
+    shakeCount++;
+    if (shakeCount > 10 && shakeCount < shakeThreshold) {
+      document.getElementById("shakeHint").style.display = "block";
+    }
+    if (shakeCount >= shakeThreshold) {
+      document.getElementById("shakeStep").style.display = "none";
+      document.getElementById("pardonStep").style.display = "block";
+    }
+  }
+});
+
+// Fallback pour simulateur ou si permission refusée
+setTimeout(() => {
+  if (document.getElementById("shakeStep").style.display === "block") {
+    // On peut ajouter un bouton "J'ai secoué !" pour éviter d'être bloqué
+  }
+}, 10000);
+
+document.getElementById("revealModsBtn").onclick = () => {
+  document.getElementById("pardonStep").style.display = "none";
+  document.getElementById("finalSelection").style.display = "block";
+  
+  const box = document.getElementById("allIncludedBox");
+  options.forEach(opt => {
+    const span = document.createElement("span");
+    span.className = "added-option";
+    span.textContent = opt;
+    box.appendChild(span);
+  });
+};
+
+document.getElementById("revealCodeBtn").onclick = () => {
+  document.getElementById("finalSelection").style.display = "none";
+  document.getElementById("codeStep").style.display = "block";
+};
+</script>
+</body>
+</html>
